@@ -24,7 +24,7 @@ SECRET_KEY = '9zhw@!75+97r8vzm*+_&x8ifuhpl^$_ai&c47k$wrn^t44&0_a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['backprop.herokuapp.com']
 
 
 # Application definition
