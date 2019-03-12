@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['backprop.herokuapp.com']
 # Application definition
 
 INSTALLED_APPS = [
+    'bpapp',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

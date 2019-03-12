@@ -1,0 +1,13 @@
+<form action="/formpage/" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Submit">
+    </form>
+
+{% if post %}
+    {% if headass %}
+        <p>{{first}} {{last}} is a large headass</p>
+    {% else %}
+        <p>{{first}} {{last}} is not a headass</p>
+    {% endif %}
+{% endif %}
