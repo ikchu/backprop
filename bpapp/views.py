@@ -10,7 +10,7 @@ from .forms import NameForm
 def index(request):
     template = loader.get_template('bpapp/homepage.html')
     context = {
-        'tempbool': False
+        'tempbool': True
     }
     return HttpResponse(template.render(context, request))
 
