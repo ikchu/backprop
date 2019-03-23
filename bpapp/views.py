@@ -5,7 +5,12 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 
+from bpapp.models import Problem
+
 from .forms import NameForm
+
+# flip this variable if I manage to get random problem generation working
+manualGeneration = False
 
 def home(request):
     context = {'tempbool': True}
@@ -19,9 +24,13 @@ def tutorial(request):
     return render(request, 'bpapp/tutorial.html', {})
 
 def practice(request, problem_id):
-    print('views.py > custom: problem_id = ', problem_id)
-    # get Problem from databse, pass in to template in context dict
-    context = {'problem_id':problem_id}
+    try:
+        context = {'problem_id':problem_id, 'problem_exists':True, 'problem':Problem.objects.get(id=problem_id)}
+    except Exception as e:
+        if manualGeneration:
+            context = {'problem_id':problem_id, 'problem_exists':False}
+        else:
+            context = {'problem_id':problem_id, 'problem_exists':True, 'problem':Problem.new()}
     return render(request, 'bpapp/practice.html', context)
 
 def custom(request, problem_id):

@@ -18,11 +18,11 @@
             </div>
             <br>
             <div> <!-- Courses (Tutorial, Regular Practice, Custom Practice) -->
-                <a href="{% url 'tutorial' %}">Tutorial</a><br>
-                <a href="{% url 'practice' 1%}">Regular Practice</a><br>
+                <a href="{% url 'tutorial' %}">Tutorial</a> <br>
+                <a href="{% url 'practice' 1%}">Regular Practice</a> <br>
                 <a href="{% url 'custom' 1 %}">Custom Practice</a>
             </div>
-
+            
             {% if tempbool %} <!-- Note: Only doing this to show example of variable passed to template-->
                 <p>Hi {{ user.username }}! Welcome to my temporary homepage. Stay tuned for more to come</p>
             {% else %}

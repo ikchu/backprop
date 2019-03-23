@@ -11,7 +11,21 @@
         <a href="{% url 'home' %}">backprop</a>
     </nav>
     <div>
-        This page will contain practice problem {{problem_id}}
+        {% if problem_id != 1 %}
+            <a href="{% url 'practice' problem_id|add:-1 %}">Prev Problem</a>
+        {% endif %}
+        {% if problem_exists %}
+            <a href="{% url 'practice' problem_id|add:1 %}">Next Problem</a>
+        {% endif %}
     </div>
+    {% if problem_exists %}
+        <div>
+            This page will contain practice problem {{problem_id}}
+        </div>
+    {% else %} <!-- Only if manual problem generation -->
+        <div>
+            Sorry, Problem {{problem_id}} has not been created
+        </div>
+    {% endif %}
 </body>
 </html>

@@ -11,6 +11,12 @@
         <a href="{% url 'home' %}">backprop</a>
     </nav>
     <div>
+        {% if problem_id != 1 %}
+            <a href="{% url 'practice' problem_id|add:-1 %}">Prev Problem</a>
+        {% endif %}
+            <a href="{% url 'practice' problem_id|add:1 %}">Next Problem</a>
+    </div>
+    <div>
         This page will contain custom problem {{problem_id}}
     </div>
 </body>
