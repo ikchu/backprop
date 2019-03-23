@@ -1,0 +1,39 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Welcome to Backprop!</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'home' %}">backprop</a>
+    </nav>
+    <div>
+        <!-- If logged in -->
+        {% if user.is_authenticated %}
+            <div> <!-- Things to put under a dropdown menu -->
+                <a href="{% url 'account' %}">My Account</a>
+                <a href="{% url 'logout' %}">Logout</a>
+            </div>
+            <br>
+            <div> <!-- Courses (Tutorial, Regular Practice, Custom Practice) -->
+                <a href="{% url 'tutorial' %}">Tutorial</a><br>
+                <a href="{% url 'practice' 1%}">Regular Practice</a><br>
+                <a href="{% url 'custom' 1 %}">Custom Practice</a>
+            </div>
+
+            {% if tempbool %} <!-- Note: Only doing this to show example of variable passed to template-->
+                <p>Hi {{ user.username }}! Welcome to my temporary homepage. Stay tuned for more to come</p>
+            {% else %}
+                <p>Welcome to the homepage. Tempbool was false.</p>
+            {% endif %}
+
+        <!-- If not logged in -->
+        {% else %}
+            <p>You are not logged in</p>
+            <a href="{% url 'login' %}">login</a>
+        {% endif %}
+    </div>
+</body>
+</html>

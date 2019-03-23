@@ -31,7 +31,8 @@ ALLOWED_HOSTS = ['backprop.herokuapp.com']
 # Application definition
 
 INSTALLED_APPS = [
-    'bpapp',
+    'bpapp.apps.BpappConfig',
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -122,10 +123,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = (
 )
 
 django_heroku.settings(locals())
+
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
