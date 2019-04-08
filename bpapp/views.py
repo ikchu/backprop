@@ -5,7 +5,8 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 
-from bpapp.models import Problem
+from bpapp.models import Node, Problem
+import bpapp.tree as bpt
 
 from .forms import NameForm
 
@@ -24,14 +25,27 @@ def tutorial(request):
     return render(request, 'bpapp/tutorial.html', {})
 
 def practice(request, problem_id):
-    try:
-        # NOTE: Django tutorial recommends using get_object_or_404() instead of get() with try/catch
-        context = {'problem_id':problem_id, 'problem_exists':True, 'problem':Problem.objects.get(id=problem_id)}
-    except Exception as e:
-        if manualGeneration:
-            context = {'problem_id':problem_id, 'problem_exists':False}
-        else:
-            context = {'problem_id':problem_id, 'problem_exists':True, 'problem':Problem.new()}
+    # try:
+    #     # NOTE: Django tutorial recommends using get_object_or_404() instead of get() with try/catch
+    #     problem = Problem.objects.get(id=problem_id)
+    #     context = {'problem_id':problem_id, 
+    #                'problem_exists':True, 
+    #                'treeData':treeData}
+    # except Exception as e:
+    #     if manualGeneration:
+    #         context = {'problem_id':problem_id, 'problem_exists':False}
+    #     else:
+    #         context = {'problem_id':problem_id, 'problem_exists':True, 'problem':Problem.new()}
+    # return render(request, 'bpapp/practice.html', context)
+
+    problem = Problem.objects.create(question_text = "sampleQuestionText", root = bpt.tree(4))
+    treeData = bpt.getData(problem.root)
+
+    context = {'problem_id':problem_id, 
+               'problem_exists':True, 
+               'text':problem.question_text,
+               'data':treeData}
+
     return render(request, 'bpapp/practice.html', context)
 
 def custom(request, problem_id):

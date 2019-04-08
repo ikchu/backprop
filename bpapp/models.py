@@ -16,7 +16,14 @@ class Node(models.Model): # private?
     bp = models.FloatField(default=0) # Ground truth backward propagation value
 
     def __str__(self):
-        return self.op +' '+ str(round(self.fp, 2)) +' '+ str(round(self.bp, 2))
+        return self.op +' '+ str(self.fp) +' '+ str(self.bp)
+
+    def toShow(self):
+        # if leaf
+        if self.op == "v":
+            return str(self.fp)
+        else:
+            return self.op
 
     def display(self):
         lines, _, _, _ = self._display_aux()
@@ -26,7 +33,7 @@ class Node(models.Model): # private?
         """Returns list of strings, width, height, and horizontal coordinate of the root."""
         # No child.
         if self.r is None and self.l is None:
-            line = '%s' % (self.op + '|' + str(round(self.fp, 2)) + '|' + str(round(self.bp, 2)))
+            line = '%s' % (self.op + '|' + str(self.fp) + '|' + str(self.bp))
             width = len(line)
             height = 1
             middle = width // 2
@@ -35,7 +42,7 @@ class Node(models.Model): # private?
         # Only l child.
         if self.r is None:
             lines, n, p, x = self.l._display_aux()
-            s = '%s' % (self.op + ' ' + str(round(self.fp, 2)) + '|' + str(round(self.bp, 2)))
+            s = '%s' % (self.op + ' ' + str(self.fp) + '|' + str(self.bp))
             u = len(s)
             first_line = (x + 1) * ' ' + (n - x - 1) * '_' + s
             second_line = x * ' ' + '/' + (n - x - 1 + u) * ' '
@@ -45,7 +52,7 @@ class Node(models.Model): # private?
         # Only r child.
         if self.l is None:
             lines, n, p, x = self.r._display_aux()
-            s = '%s' % (self.op + ' ' + str(round(self.fp, 2)) + '|' + str(round(self.bp, 2)))
+            s = '%s' % (self.op + ' ' + str(self.fp) + '|' + str(self.bp))
             u = len(s)
             first_line = s + x * '_' + (n - x) * ' '
             second_line = (u + x) * ' ' + '\\' + (n - x - 1) * ' '
@@ -55,7 +62,7 @@ class Node(models.Model): # private?
         # Two children.
         l, n, p, x = self.l._display_aux()
         r, m, q, y = self.r._display_aux()
-        s = '%s' % (self.op + ' ' + str(round(self.fp, 2)) + '|' + str(round(self.bp, 2)))
+        s = '%s' % (self.op + ' ' + str(self.fp) + '|' + str(self.bp))
         u = len(s)
         first_line = (x + 1) * ' ' + (n - x - 1) * '_' + s + y * '_' + (m - y) * ' '
         second_line = x * ' ' + '/' + (n - x - 1 + u + y) * ' ' + '\\' + (m - y - 1) * ' '
@@ -76,4 +83,7 @@ class Problem(models.Model): # default Django tutorial implementation
     # comments = # reach feature, would need to put in a separate class and cross reference
 
     def __str__(self):
-        return self.question_text
+        if self.root is None:
+            return self.question_text + ", " + "No Root"
+        else:
+            return self.question_text + ", " + self.root.op +' '+ str(round(self.root.fp, 2)) +' '+ str(round(self.root.bp, 2))
