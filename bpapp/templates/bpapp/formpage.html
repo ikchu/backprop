@@ -1,8 +1,8 @@
 <form action="/formpage/" method="post">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Submit">
-    </form>
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
 
 {% if post %}
     {% if headass %}

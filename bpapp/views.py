@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 
@@ -25,6 +25,7 @@ def tutorial(request):
 
 def practice(request, problem_id):
     try:
+        # NOTE: Django tutorial recommends using get_object_or_404() instead of get() with try/catch
         context = {'problem_id':problem_id, 'problem_exists':True, 'problem':Problem.objects.get(id=problem_id)}
     except Exception as e:
         if manualGeneration:
