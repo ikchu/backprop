@@ -18,12 +18,17 @@ class Node(models.Model): # private?
     def __str__(self):
         return self.op +' '+ str(self.fp) +' '+ str(self.bp)
 
-    def toShow(self):
+    def initialValues(self):
         # if leaf
-        if self.op == "v":
-            return str(self.fp)
+        if self.op == 'v':
+            return str(round(self.fp, 2))
         else:
             return self.op
+    def allValues(self):
+        if self.op == 'v':
+            return str(round(self.fp, 2)) + '__' + str(round(self.bp, 2))
+        else:
+            return str(round(self.fp, 2)) + '__' + str(round(self.bp, 2)) + '__' + self.op
 
     def display(self):
         lines, _, _, _ = self._display_aux()

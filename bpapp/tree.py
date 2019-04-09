@@ -63,6 +63,7 @@ def forwardprop_aux(node):
     else:
         fp = Operation_dict[node.op](forwardprop_aux(node.l), forwardprop_aux(node.r))
         node.fp = fp
+        node.save()
         return fp
 
 def backprop(root):
@@ -73,6 +74,7 @@ def backprop_aux(node, bp):
     # multiply local derivative by parent derivative bp_y
 
     node.bp = bp
+    node.save()
 
     if (node.op != "v"): # as long as not on variable leaf node
         bp_left = diff(Operation_dict[node.op], (node.l.fp, node.r.fp), (1,0)) * bp
@@ -81,16 +83,26 @@ def backprop_aux(node, bp):
         backprop_aux(node.l, bp_left)
         backprop_aux(node.r, bp_right)
 
-def getData(root):
-    data = getData_aux(root, None)
+def getDataForTemplate(root, showAll):
+    data = getData_aux(root, None, showAll)
     return [ data ]
-def getData_aux(node, parent):
+def getData_aux(node, parent, showAll):
     nodeData = {}
-    nodeData["name"] = node.toShow()
-    if (parent is None):
-        nodeData["parent"] = "null"
+    # if we should show everything (variables, fp values, bp values, etc. )
+    if showAll:
+        nodeData["name"] = node.allValues()
+        if (parent is None):
+            nodeData["parent"] = "null"
+        else:
+            nodeData["parent"] = parent.allValues()
+    # if we should only show the initial values (variables, operations)
     else:
-        nodeData["parent"] = parent.toShow()
+        nodeData["name"] = node.initialValues()
+        if (parent is None):
+            nodeData["parent"] = "null"
+        else:
+            nodeData["parent"] = parent.initialValues()
+
     if (node.op != "v"):
-        nodeData["children"] = [getData_aux(node.l, node), getData_aux(node.r, node)]
+        nodeData["children"] = [getData_aux(node.l, node, showAll), getData_aux(node.r, node, showAll)]
     return nodeData
